@@ -1,0 +1,8 @@
+{% from "_formhelpers.html" import render_field %}
+<form method=post action="/test/">
+  <dl>
+    {{ render_field(form.alcohol_percentage) }}
+    {{ render_field(form.fixed_acidity) }}
+  </dl>
+  <p><input type=submit value=Submit>
+</form>

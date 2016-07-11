@@ -9,3 +9,4 @@ six == 1.10.0
 flask-debugtoolbar
 gunicorn
 redis
+Flask-WTF
