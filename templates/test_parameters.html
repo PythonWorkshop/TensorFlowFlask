@@ -1,8 +1,17 @@
 {% from "_formhelpers.html" import render_field %}
 <form method=post action="/test/">
+    {{ form.csrf_token }}
   <dl>
-    {{ render_field(form.alcohol_percentage) }}
-    {{ render_field(form.fixed_acidity) }}
+    {{ render_field(form.alcohol             ) }}
+    {{ render_field(form.volatile_acidity    ) }}
+    {{ render_field(form.citric_acid         ) }}
+    {{ render_field(form.residual_sugar      ) }}
+    {{ render_field(form.chlorides           ) }}
+    {{ render_field(form.free_sulfur_dioxide ) }}
+    {{ render_field(form.total_sulfur_dioxide) }}
+    {{ render_field(form.density             ) }}
+    {{ render_field(form.ph                  ) }}
+    {{ render_field(form.sulphates           ) }}
   </dl>
   <p><input type=submit value=Submit>
 </form>

@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request, Response, render_template
+from flask import request, Response, render_template, url_for, redirect
 from flask import abort
 from flask_wtf.csrf import CsrfProtect
 
@@ -29,8 +29,7 @@ def hello_world():
 def test_parameters():
     form = TestParameterForm(request.form)
     if request.method == 'POST' and form.validate():
-        print("Alcohol Percentage: {}".format(form.alcohol_percentage))
-        print("Fixed Acidity: {}".format(form.fixed_acidity))
+        print(form.__dict__)
         return redirect(url_for('hello_world'))
     return render_template('test_parameters.html', form=form)
 
