@@ -6,13 +6,13 @@ from flask_wtf.csrf import CsrfProtect
 import tensorflow as tf
 
 import sys
-sys.path.append('mnist')
+sys.path.append('wine_quality')
 import wine_quality.model as model
 
 x = tf.placeholder("float", [None, 10])
 sess = tf.Session()
 
-with tf.variable_scope("simple"):
+with tf.variable_scope("softmax_regression"):
     y1, variables = model.softmax_regression(x)
 saver = tf.train.Saver(variables)
 saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
