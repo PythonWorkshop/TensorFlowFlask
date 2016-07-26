@@ -28,7 +28,6 @@ def _dense_to_one_hot(labels_dense, num_classes=2):
 def train_model():
 
     column_list = red_wine.columns.tolist()
-
     threshold = 5
 
     red_wine_cleaned = red_wine.copy()
@@ -45,7 +44,9 @@ def train_model():
     bins = [3, 5, 8]
     red_wine_newcats['category'] = pd.cut(red_wine_newcats.quality, bins, labels=['Bad', 'Good'], include_lowest=True)
 
+
     y_red_wine = red_wine_newcats[['category']].get_values()
+    # Removing fixed_acidity and quality
     X_red_wine = red_wine_newcats.iloc[:,1:-2].get_values()
 
     y_red_wine_raveled = y_red_wine.ravel()
@@ -57,7 +58,6 @@ def train_model():
     y_one_hot = _dense_to_one_hot(y_red_wine_integers, num_classes=2)
 
     X_train, X_test, y_train, y_test = train_test_split(X_red_wine, y_one_hot, test_size=0.2, random_state=42)
-
     # model
     learning_rate = 0.001
     batch_size = 126
@@ -84,8 +84,9 @@ def train_model():
             sess.run(optimizer, feed_dict={X: X_train[start:end], y_: y_train[start:end]})
             # Compute average loss
             average_cost += sess.run(cost, feed_dict={X: X_train[start:end], y_: y_train[start:end]}) / number_of_batches
-
         print(sess.run(accuracy, feed_dict={X: X_test, y_: y_test}))
 
         path = saver.save(sess, os.path.join(os.path.dirname(__file__), "data/softmax_regression.ckpt"))
         print("Saved:", path)
+
+train_model()

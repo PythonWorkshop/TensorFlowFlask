@@ -6,8 +6,16 @@ from flask_wtf.csrf import CsrfProtect
 import tensorflow as tf
 
 import sys
+<<<<<<< HEAD
 sys.path.append('wine_quality')
+=======
+>>>>>>> a5fa9c9b8f29d00dbdb3d7a6027c75d0160cd26f
 import wine_quality.model as model
+import json
+import os
+from form import TestParameterForm
+
+
 
 x = tf.placeholder("float", [None, 10])
 sess = tf.Session()
@@ -16,17 +24,12 @@ with tf.variable_scope("softmax_regression"):
     y1, variables = model.softmax_regression(x)
 saver = tf.train.Saver(variables)
 saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
-def simple(input):
-    return sess.run(y1, feed_dict={x: input}).flatten().tolist()
+def simple(x1):
+    return sess.run(y1, feed_dict={x: x1}).flatten().tolist()
+
 
 
 csrf = CsrfProtect()
-
-import json
-import os
-from form import TestParameterForm
-
-
 app = Flask(__name__)
 csrf.init_app(app)
 
@@ -47,6 +50,14 @@ def test_parameters():
     form = TestParameterForm(request.form)
     if request.method == 'POST' and form.validate():
         print(form.__dict__)
+        print(form.citric_acid.data)
+        print(form.citric_acid.data)
+        print(form.citric_acid.data)
+        print(form.citric_acid.data)
+        print(form.citric_acid.data)
+        print(form.citric_acid.data)
+        simple(range(10))
+        result = 0
         return render_template('test_parameters.html', form=form, result=result)
     return render_template('test_parameters.html', form=form)
 
