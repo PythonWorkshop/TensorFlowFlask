@@ -6,10 +6,7 @@ from flask_wtf.csrf import CsrfProtect
 import tensorflow as tf
 
 import sys
-<<<<<<< HEAD
 sys.path.append('wine_quality')
-=======
->>>>>>> a5fa9c9b8f29d00dbdb3d7a6027c75d0160cd26f
 import wine_quality.model as model
 import json
 import os
