@@ -17,6 +17,7 @@ def _outliers(df, threshold, columns):
         df.loc[mask == True,col] = mean_property
     return df
 
+
 # Convert labels into one-hot vector format
 def _dense_to_one_hot(labels_dense, num_classes=2):
     # Convert class labels from scalars to one-hot vectors
@@ -25,6 +26,17 @@ def _dense_to_one_hot(labels_dense, num_classes=2):
     labels_one_hot = np.zeros((num_labels, num_classes))
     labels_one_hot.flat[index_offset + labels_dense] = 1
     return labels_one_hot
+
+
+# Function to convert string categories into integers for making one-hot vectors
+def _make_integer_labels(label_series):
+    label_series_raveled = label_series.ravel().copy()
+    labels_to_replace = np.sort(label_series.unique())
+    replace_with = np.arange(len(labels_to_replace)).tolist()
+    integer_labels = pd.Series(label_series_raveled).replace(to_replace=labels_to_replace, value=replace_with).tolist()
+
+    return integer_labels
+
 
 # Function to train the model
 def train_model():
@@ -54,10 +66,7 @@ def train_model():
     X_red_wine = red_wine_newcats.iloc[:,1:-2].get_values()
 
     # Convert string categories into integers that can be used to make one-hot vectors
-    y_red_wine_raveled = y_red_wine.ravel()
-    y_red_wine_integers = [y.replace('Bad', '1') for y in y_red_wine_raveled]
-    y_red_wine_integers = [y.replace('Good', '0') for y in y_red_wine_integers]
-    y_red_wine_integers = [np.int(y) for y in y_red_wine_integers]
+    y_red_wine_integers = _make_integer_labels(y_red_wine)
 
     # Create one-hot vector array for labels
     y_one_hot = _dense_to_one_hot(y_red_wine_integers, num_classes=2)
