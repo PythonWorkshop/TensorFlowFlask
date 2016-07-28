@@ -8,7 +8,6 @@ import os
 from form import TestParameterForm
 
 
-
 x = tf.placeholder("float", [None, 10])
 sess = tf.Session()
 

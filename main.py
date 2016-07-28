@@ -21,8 +21,7 @@ with tf.variable_scope("softmax_regression"):
 saver = tf.train.Saver(variables)
 saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
 def simple(x1):
-    return sess.run(y1, feed_dict={x: x1}).flatten().tolist()
-
+    return sess.run(y1, feed_dict={x: x1})
 
 
 csrf = CsrfProtect()
@@ -52,9 +51,9 @@ def test_parameters():
         print(form.citric_acid.data)
         print(form.citric_acid.data)
         print(form.citric_acid.data)
-        simple(range(10))
-        result = 0
-        return render_template('test_parameters.html', form=form, result=result)
+        # simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
+        results = simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
+        return render_template('test_parameters.html', form=form, result=results[0])
     return render_template('test_parameters.html', form=form)
 
 
