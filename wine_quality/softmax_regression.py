@@ -29,11 +29,13 @@ def _dense_to_one_hot(labels_dense, num_classes=2):
 
 
 # Function to convert string categories into integers for making one-hot vectors
-def _make_integer_labels(label_series):
-    label_series_raveled = label_series.ravel().copy()
-    labels_to_replace = np.sort(label_series.unique())
+def _make_integer_labels(label_array):
+    labels_raveled = label_array.ravel()
+    label_series = pd.Series(labels_raveled)
+    unique_labels = label_series.unique()
+    labels_to_replace = np.sort(unique_labels)
     replace_with = np.arange(len(labels_to_replace)).tolist()
-    integer_labels = pd.Series(label_series_raveled).replace(to_replace=labels_to_replace, value=replace_with).tolist()
+    integer_labels = label_series.replace(to_replace=labels_to_replace, value=replace_with).tolist()
 
     return integer_labels
 
@@ -61,6 +63,7 @@ def train_model():
 
     # Extract categories column and save in an array for the labels
     y_red_wine = red_wine_newcats[['category']].get_values()
+    print(pd.Series(y_red_wine.ravel()).unique())
 
     # Extract features and save to an array. Removing fixed_acidity and quality
     X_red_wine = red_wine_newcats.iloc[:,1:-2].get_values()
