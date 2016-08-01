@@ -7,10 +7,12 @@ import tensorflow as tf
 
 import sys
 import wine_quality.model as model
+from wine_quality.training import train_model
 import json
 import os
-from form import TestParameterForm
-
+from form import TestParameterForm, TrainingDataForm
+from werkzeug.utils import secure_filename
+import pandas as pd
 
 
 x = tf.placeholder("float", [None, 10])
@@ -45,16 +47,28 @@ def test_parameters():
     form = TestParameterForm(request.form)
     if request.method == 'POST' and form.validate():
         print(form.__dict__)
-        print(form.citric_acid.data)
-        print(form.citric_acid.data)
-        print(form.citric_acid.data)
-        print(form.citric_acid.data)
-        print(form.citric_acid.data)
-        print(form.citric_acid.data)
         # simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
         results = simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
         return render_template('test_parameters.html', form=form, result=results[0])
     return render_template('test_parameters.html', form=form)
+
+
+@app.route('/train/', methods=('GET', 'POST'))
+def upload():
+    form = TrainingDataForm()
+    if form.validate_on_submit():
+        model_name = form.model_name.data
+        learning_rate = float(form.learning_rate.data)
+        batch_size = int(form.batch_size.data)
+        filename = secure_filename(form.training_data.data.filename)
+        print(form.__dict__)
+        # Save to Redis here
+        form.training_data.data.save('wine_quality/data/' + filename)
+        dataframe = pd.read_csv('wine_quality/data/' + filename, sep=';')
+        train_model(dataframe, learning_rate, batch_size)
+    else:
+        filename = None
+    return render_template('test_data_upload.html', form=form, filename=filename)
 
 
 if __name__ == '__main__':

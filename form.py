@@ -1,5 +1,6 @@
 from flask_wtf import Form
-from wtforms import DecimalField, validators
+from wtforms import DecimalField, validators, FileField, StringField
+from wtforms.validators import DataRequired
 
 class TestParameterForm(Form):
     alcohol              = DecimalField('Alcohol Percentage')
@@ -12,3 +13,10 @@ class TestParameterForm(Form):
     density              = DecimalField('Density')
     ph                   = DecimalField('pH')
     sulphates            = DecimalField('Sulphates')
+
+
+class TrainingDataForm(Form):
+    training_data  = FileField('Training Data CSV File')
+    learning_rate = DecimalField('Learning Rate')
+    batch_size    = DecimalField('Batch Size')
+    model_name    = StringField('Model Name', validators=[DataRequired()])

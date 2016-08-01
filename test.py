@@ -2,6 +2,7 @@
 import tensorflow as tf
 
 import sys
+from wine_quality.training import train_model
 import wine_quality.model as model
 import json
 import os
@@ -10,6 +11,9 @@ from form import TestParameterForm
 
 x = tf.placeholder("float", [None, 10])
 sess = tf.Session()
+
+dataframe = pd.read_csv('data/winequality-red.csv', sep=';')
+train_model(dataframe)
 
 with tf.variable_scope("softmax_regression"):
     y1, variables = model.softmax_regression(x)

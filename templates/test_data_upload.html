@@ -1,0 +1,19 @@
+<head></head>
+<body>
+
+<div>
+<h2>Input</h2>
+{% from "_formhelpers.html" import render_field %}
+<form method=post action="/train/" enctype="multipart/form-data">
+    {{ form.csrf_token }}
+  <dl>
+    {{ render_field(form.training_data             ) }}
+    {{ render_field(form.learning_rate    ) }}
+    {{ render_field(form.batch_size         ) }}
+    {{ render_field(form.model_name      ) }}
+  </dl>
+  <p><input type=submit value=Submit>
+</form>
+</div>
+</body>
+    
