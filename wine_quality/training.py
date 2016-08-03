@@ -3,10 +3,9 @@ import tensorflow as tf
 import pandas as pd
 import numpy as np
 from sklearn.cross_validation import train_test_split
-import model
+import wine_quality.model as model
 
 # Load the data
-red_wine = pd.read_csv('data/winequality-red.csv', sep=';')
 
 # Remove outliers
 def _outliers(df, threshold, columns):
@@ -25,12 +24,11 @@ def _dense_to_one_hot(labels_dense, num_classes=2):
     labels_one_hot.flat[index_offset + labels_dense] = 1
     return labels_one_hot
 
-def train_model():
-
-    column_list = red_wine.columns.tolist()
+def train_model(training_df, learning_rate=0.001, batch_size=126):
+    column_list = training_df.columns.tolist()
     threshold = 5
 
-    red_wine_cleaned = red_wine.copy()
+    red_wine_cleaned = training_df.copy()
     red_wine_cleaned = _outliers(red_wine_cleaned, threshold, column_list[0:-1])
 
     # Bin the data
@@ -59,8 +57,6 @@ def train_model():
 
     X_train, X_test, y_train, y_test = train_test_split(X_red_wine, y_one_hot, test_size=0.2, random_state=42)
     # model
-    learning_rate = 0.001
-    batch_size = 126
 
     with tf.variable_scope("softmax_regression"):
         X = tf.placeholder("float", [None, 10])
@@ -89,4 +85,3 @@ def train_model():
         path = saver.save(sess, os.path.join(os.path.dirname(__file__), "data/softmax_regression.ckpt"))
         print("Saved:", path)
 
-train_model()
