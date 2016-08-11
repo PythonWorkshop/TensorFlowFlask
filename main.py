@@ -66,7 +66,7 @@ def upload():
         print(form.__dict__)
         # Save to Redis here
         form.training_data.data.save('wine_quality/data/' + filename)
-        dataframe = pd.read_csv('wine_quality/data/' + filename, sep=';')
+        dataframe = pd.read_csv('wine_quality/data/' + filename, sep=',')
         train_model(dataframe, learning_rate, batch_size)
     else:
         filename = None
