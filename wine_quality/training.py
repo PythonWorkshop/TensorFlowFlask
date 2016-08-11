@@ -73,7 +73,7 @@ def train_model(training_df, learning_rate=0.001, batch_size=126):
     sess = tf.Session()
     init = tf.initialize_all_variables()
     sess.run(init)
-    log_dict = {}  # Dictionary to store logging of model progress
+    log_list = []  # List to store logging of model progress
     for i in range(100):
         average_cost = 0
         number_of_batches = int(len(X_train) / batch_size)
@@ -81,23 +81,25 @@ def train_model(training_df, learning_rate=0.001, batch_size=126):
             sess.run(optimizer, feed_dict={X: X_train[start:end], y_: y_train[start:end]})
             # Compute average loss
             average_cost += sess.run(cost, feed_dict={X: X_train[start:end], y_: y_train[start:end]}) / number_of_batches
-        # print("Epoch:", '%04d' % (i + 1), "cost=", "{:.9f}".format(average_cost))
-        log_cost = "Epoch:", '%04d' % (i + 1), "cost=", "{:.9f}".format(average_cost)
+        print("Epoch:", '%04d' % (i + 1), "cost=", "{:.9f}".format(average_cost))
+        log_cost = "Epoch: {:d}, cost= {:.9f}".format(i + 1, average_cost)
         # print(log_cost)
-        log_dict['line_{0}'.format(i)] = log_cost
+        log_list.append(log_cost)
 
-    # print("Finished optimization!")
-    log_dict['line_{0}'.format(len(log_dict) + 1)] = "Finished optimization!"
+    print("Finished optimization!")
+    log_list.append("Finished optimization!")
 
+    print("Accuracy: {0}".format(sess.run(accuracy, feed_dict={X: X_test, y_: y_test})))
     log_accuracy = "Accuracy: {0}".format(sess.run(accuracy, feed_dict={X: X_test, y_: y_test}))
     # print(log_accuracy)
-    log_dict['line_{0}'.format(len(log_dict)+1)] = log_accuracy
+    log_list.append(log_accuracy)
 
     path = saver.save(sess, os.path.join(os.path.dirname(__file__), "data/softmax_regression.ckpt"))
-    # print("Saved:", path)
-    log_dict['line_{0}'.format(len(log_dict)+1)] = "Saved: "+path
+    print("Saved:", path)
+    log_list.append("Saved: "+path)
 
-    print(log_dict)
+    print("")
+    print(log_list)
 
-    return log_dict
+    # return log_list
 
