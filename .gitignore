@@ -1,2 +1,7 @@
+.cache
+htmlcov
+.coverage
+.tox
+.envrc
 *.pyc
 
