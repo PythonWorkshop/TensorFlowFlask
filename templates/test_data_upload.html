@@ -15,5 +15,15 @@
   <p><input type=submit value=Submit>
 </form>
 </div>
+<div>
+  {% if model_log %}
+  <h2>Model Log</h2>
+    <p>
+    {% for log_entry in model_log %}
+      {{ log_entry }}<br>
+    {% endfor %}
+    </p>
+  {% endif %}
+</div>
 </body>
     

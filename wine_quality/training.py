@@ -101,5 +101,5 @@ def train_model(training_df, learning_rate=0.001, batch_size=126):
     print("")
     print(log_list)
 
-    # return log_list
+    return log_list
 

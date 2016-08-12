@@ -67,7 +67,8 @@ def upload():
         # Save to Redis here
         form.training_data.data.save('wine_quality/data/' + filename)
         dataframe = pd.read_csv('wine_quality/data/' + filename, sep=',')
-        train_model(dataframe, learning_rate, batch_size)
+        model_log = train_model(dataframe, learning_rate, batch_size)
+        return render_template('test_data_upload.html', form=form, filename=filename, model_log=model_log)
     else:
         filename = None
     return render_template('test_data_upload.html', form=form, filename=filename)
