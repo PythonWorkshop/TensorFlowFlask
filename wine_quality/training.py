@@ -42,16 +42,14 @@ def train_model(training_df, learning_rate=0.001, batch_size=126):
     bins = [3, 5, 8]
     red_wine_newcats['category'] = pd.cut(red_wine_newcats.quality, bins, labels=['Bad', 'Good'], include_lowest=True)
 
-
     y_red_wine = red_wine_newcats[['category']].get_values()
     # Removing fixed_acidity and quality
     X_red_wine = red_wine_newcats.iloc[:,1:-2].get_values()
 
     y_red_wine_raveled = y_red_wine.ravel()
-    y_red_wine_integers = [y.replace('Bad', '1') for y in y_red_wine_raveled]
-    y_red_wine_integers = [y.replace('Good', '0') for y in y_red_wine_integers]
+    y_red_wine_integers = [y.replace('Bad', '0') for y in y_red_wine_raveled]
+    y_red_wine_integers = [y.replace('Good', '1') for y in y_red_wine_integers]
     y_red_wine_integers = [np.int(y) for y in y_red_wine_integers]
-
 
     y_one_hot = _dense_to_one_hot(y_red_wine_integers, num_classes=2)
 
@@ -70,36 +68,38 @@ def train_model(training_df, learning_rate=0.001, batch_size=126):
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
 
     saver = tf.train.Saver(variables)
-    sess = tf.Session()
     init = tf.initialize_all_variables()
-    sess.run(init)
-    log_list = []  # List to store logging of model progress
-    for i in range(100):
-        average_cost = 0
-        number_of_batches = int(len(X_train) / batch_size)
-        for start, end in zip(range(0, len(X_train), batch_size), range(batch_size, len(X_train), batch_size)):
-            sess.run(optimizer, feed_dict={X: X_train[start:end], y_: y_train[start:end]})
-            # Compute average loss
-            average_cost += sess.run(cost, feed_dict={X: X_train[start:end], y_: y_train[start:end]}) / number_of_batches
-        print("Epoch:", '%04d' % (i + 1), "cost=", "{:.9f}".format(average_cost))
-        log_cost = "Epoch: {:d}, cost= {:.9f}".format(i + 1, average_cost)
-        # print(log_cost)
-        log_list.append(log_cost)
+    with tf.Session() as sess:
 
-    print("Finished optimization!")
-    log_list.append("Finished optimization!")
+        sess.run(init)
+        log_list = []  # List to store logging of model progress
+        for i in range(100):
+            average_cost = 0
+            number_of_batches = int(len(X_train) / batch_size)
+            for start, end in zip(range(0, len(X_train), batch_size), range(batch_size, len(X_train), batch_size)):
+                sess.run(optimizer, feed_dict={X: X_train[start:end], y_: y_train[start:end]})
+                # Compute average loss
+                average_cost += sess.run(cost,
+                                         feed_dict={X: X_train[start:end], y_: y_train[start:end]}) / number_of_batches
+            if i % 10 == 0:
+                print("Epoch:", '%04d' % (i + 1), "cost=", "{:.9f}".format(average_cost))
+                log_cost = "Epoch {:d}: cost = {:.9f}".format(i + 1, average_cost)
+                # print(log_cost)
+                log_list.append(log_cost)
 
-    print("Accuracy: {0}".format(sess.run(accuracy, feed_dict={X: X_test, y_: y_test})))
-    log_accuracy = "Accuracy: {0}".format(sess.run(accuracy, feed_dict={X: X_test, y_: y_test}))
-    # print(log_accuracy)
-    log_list.append(log_accuracy)
+        print("Accuracy: {0}".format(sess.run(accuracy, feed_dict={X: X_test, y_: y_test})))
+        log_accuracy = "Accuracy: {0}".format(sess.run(accuracy, feed_dict={X: X_test, y_: y_test}))
+        # print(log_accuracy)
+        log_list.append(log_accuracy)
 
-    path = saver.save(sess, os.path.join(os.path.dirname(__file__), "data/softmax_regression.ckpt"))
-    print("Saved:", path)
-    log_list.append("Saved: "+path)
+        path = saver.save(sess, os.path.join(os.path.dirname(__file__), "data/softmax_regression.ckpt"))
+        print("Saved:", path)
+        # log_list.append("Saved: "+path)
 
-    print("")
-    print(log_list)
+        print("")
+        print(log_list)
 
-    return log_list
+        return log_list
 
+# df = pd.read_csv('data/winequality-red.csv', sep=',')
+# train_model(df)

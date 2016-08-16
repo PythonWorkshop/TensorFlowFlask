@@ -1,29 +1,43 @@
-<head></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Model Training</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 <body>
 
-<div>
-<h2>Input</h2>
-{% from "_formhelpers.html" import render_field %}
-<form method=post action="/train/" enctype="multipart/form-data">
-    {{ form.csrf_token }}
-  <dl>
-    {{ render_field(form.training_data             ) }}
-    {{ render_field(form.learning_rate    ) }}
-    {{ render_field(form.batch_size         ) }}
-    {{ render_field(form.model_name      ) }}
-  </dl>
-  <p><input type=submit value=Submit>
-</form>
-</div>
-<div>
-  {% if model_log %}
-  <h2>Model Log</h2>
-    <p>
-    {% for log_entry in model_log %}
-      {{ log_entry }}<br>
-    {% endfor %}
-    </p>
-  {% endif %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-4">
+      <h2>Input</h2>
+      {% from "_formhelpers.html" import render_field %}
+      <form method=post action="/train/" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+        <dl>
+          {{ render_field(form.training_data             ) }}
+          {{ render_field(form.learning_rate    ) }}
+          {{ render_field(form.batch_size         ) }}
+          {{ render_field(form.model_name      ) }}
+        </dl>
+        <p><input type=submit value=Submit>
+      </form>
+    </div>
+
+    <div class="col-sm-8">
+      {% if model_log %}
+      <h2>Model Log</h2>
+      <p>
+        {% for log_entry in model_log %}
+        {{ log_entry }}<br>
+        {% endfor %}
+      </p>
+      {% endif %}
+    </div>
+  </div>
 </div>
 </body>
     

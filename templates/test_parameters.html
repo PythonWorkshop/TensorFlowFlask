@@ -1,29 +1,44 @@
-<head></head>
+<head>
+    <title>Fit Model</title>
+    <meta charset="utf-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 
 <body>
 
-<div>
-<h2>Input</h2>
-{% from "_formhelpers.html" import render_field %}
-<form method=post action="/test/">
-    {{ form.csrf_token }}
-  <dl>
-    {{ render_field(form.alcohol             ) }}
-    {{ render_field(form.volatile_acidity    ) }}
-    {{ render_field(form.citric_acid         ) }}
-    {{ render_field(form.residual_sugar      ) }}
-    {{ render_field(form.chlorides           ) }}
-    {{ render_field(form.free_sulfur_dioxide ) }}
-    {{ render_field(form.total_sulfur_dioxide) }}
-    {{ render_field(form.density             ) }}
-    {{ render_field(form.ph                  ) }}
-    {{ render_field(form.sulphates           ) }}
-  </dl>
-  <p><input type=submit value=Submit>
-</form>
-</div>
-<div>
-    <h2>Result</h2>
-    <p>{{result}}</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-4">
+        <h2>Input</h2>
+        {% from "_formhelpers.html" import render_field %}
+        <form method=post action="/test/">
+            {{ form.csrf_token }}
+          <dl>
+            {{ render_field(form.volatile_acidity    ) }}
+            {{ render_field(form.citric_acid         ) }}
+            {{ render_field(form.residual_sugar      ) }}
+            {{ render_field(form.chlorides           ) }}
+            {{ render_field(form.free_sulfur_dioxide ) }}
+            {{ render_field(form.total_sulfur_dioxide) }}
+            {{ render_field(form.density             ) }}
+            {{ render_field(form.ph                  ) }}
+            {{ render_field(form.sulphates           ) }}
+            {{ render_field(form.alcohol             ) }}
+          </dl>
+          <p><input type=submit value=Submit>
+        </form>
+        </div>
+
+        <div class="col-sm-4">
+            {% if result %}
+            <h2>Result</h2>
+                <p>Probability wine is bad: {{ result[0] }}</p>
+                <p>Probability wine is good: {{ result[1] }}</p>
+            {% endif %}
+        </div>
+    </div>
 </div>
 </body>

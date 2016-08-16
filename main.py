@@ -23,9 +23,9 @@ sess = tf.Session()
 with tf.variable_scope("softmax_regression"):
     y1, variables = model.softmax_regression(x)
 saver = tf.train.Saver(variables)
-# saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
+saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
 def simple(x1):
-    return sess.run(y1, feed_dict={x: x1})
+    return sess.run(y1, feed_dict={x: x1}).flatten().tolist()
 
 
 csrf = CsrfProtect()
@@ -48,11 +48,29 @@ def hello_world():
 def test_parameters():
     form = TestParameterForm(request.form)
     if request.method == 'POST' and form.validate():
+        volatile_acidity = float(form.volatile_acidity.data)
+        citric_acid = float(form.citric_acid.data)
+        residual_sugar = float(form.residual_sugar.data)
+        chlorides = float(form.chlorides.data)
+        free_sulfur_dioxide = float(form.free_sulfur_dioxide.data)
+        total_sulfur_dioxide = float(form.total_sulfur_dioxide.data)
+        density = float(form.density.data)
+        ph = float(form.ph.data)
+        sulphates = float(form.sulphates.data)
+        alcohol = float(form.alcohol.data)
+        input_list = [volatile_acidity, citric_acid, residual_sugar, chlorides, free_sulfur_dioxide,
+                      total_sulfur_dioxide, density, ph, sulphates, alcohol]
         print(form.__dict__)
         # simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
-        results = simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
-        return render_template('test_parameters.html', form=form, result=results[0])
-    return render_template('test_parameters.html', form=form)
+        results = simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])  # Bad wine
+        # results = simple([[0.35, 0.46, 3.6, 0.078, 15, 37, 0.99730, 3.35, 0.86, 12.8]])  # Good wine
+        print(results)
+        # results = simple([input_list])
+        # return render_template('test_parameters.html', form=form, result=results)
+    else:
+        results = None
+
+    return render_template('test_parameters.html', form=form, result=results)
 
 
 @app.route('/train/', methods=('GET', 'POST'))
