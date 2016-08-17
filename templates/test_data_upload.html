@@ -10,7 +10,25 @@
 </head>
 <body>
 
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/test"></a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/test">Home</a></li>
+            <li class="active"><a href="/train">Training Page</a></li>
+        </ul>
+    </div>
+</nav>
+
 <div class="container-fluid">
+  <div style="background:#8181F7 !important" class="jumbotron">
+    <h1>Model Training</h1>
+    <p>Load a csv with your wine data set. Then choose a learning rate, batch size and output model name. Press submit
+    to train the model.</p>
+  </div>
+
   <div class="row">
     <div class="col-sm-4">
       <h2>Input</h2>
@@ -29,7 +47,11 @@
 
     <div class="col-sm-8">
       {% if model_log %}
-      <h2>Model Log</h2>
+      <h2>Model</h2>
+      <h3>Training Parameters</h3>
+      <p>Learning rate = {{ learning_rate }}</p>
+      <p>Batch size = {{ batch_size}}</p>
+      <h3>Model Training Log</h3>
       <p>
         {% for log_entry in model_log %}
         {{ log_entry }}<br>

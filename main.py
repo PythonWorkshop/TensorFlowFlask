@@ -23,7 +23,7 @@ sess = tf.Session()
 with tf.variable_scope("softmax_regression"):
     y1, variables = model.softmax_regression(x)
 saver = tf.train.Saver(variables)
-saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
+# saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
 def simple(x1):
     return sess.run(y1, feed_dict={x: x1}).flatten().tolist()
 
@@ -86,7 +86,8 @@ def upload():
         form.training_data.data.save('wine_quality/data/' + filename)
         dataframe = pd.read_csv('wine_quality/data/' + filename, sep=',')
         model_log = train_model(dataframe, learning_rate, batch_size)
-        return render_template('test_data_upload.html', form=form, filename=filename, model_log=model_log)
+        return render_template('test_data_upload.html', form=form, filename=filename, model_log=model_log,
+                               learning_rate=learning_rate, batch_size=batch_size)
     else:
         filename = None
     return render_template('test_data_upload.html', form=form, filename=filename)
