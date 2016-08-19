@@ -23,7 +23,7 @@ sess = tf.Session()
 with tf.variable_scope("softmax_regression"):
     y1, variables = model.softmax_regression(x)
 saver = tf.train.Saver(variables)
-# saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
+saver.restore(sess, "wine_quality/data/softmax_regression.ckpt")
 def simple(x1):
     return sess.run(y1, feed_dict={x: x1}).flatten().tolist()
 

@@ -80,7 +80,8 @@ def train_model(training_df, learning_rate=0.001, batch_size=126):
                 sess.run(optimizer, feed_dict={X: X_train[start:end], y_: y_train[start:end]})
                 # Compute average loss
                 average_cost += sess.run(cost,
-                                         feed_dict={X: X_train[start:end], y_: y_train[start:end]}) / number_of_batches
+                                         feed_dict={X: X_train[start:end],
+                                                    y_: y_train[start:end]}) / number_of_batches
             if i % 10 == 0:
                 print("Epoch:", '%04d' % (i + 1), "cost=", "{:.9f}".format(average_cost))
                 log_cost = "Epoch {:d}: cost = {:.9f}".format(i + 1, average_cost)
