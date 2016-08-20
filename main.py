@@ -61,12 +61,13 @@ def test_parameters():
         input_list = [volatile_acidity, citric_acid, residual_sugar, chlorides, free_sulfur_dioxide,
                       total_sulfur_dioxide, density, ph, sulphates, alcohol]
         print(form.__dict__)
+        # VALUES TO USE: [0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]
         # simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
-        results = simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])  # Bad wine
+        # results = simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])  # Bad wine
         # results = simple([[0.35, 0.46, 3.6, 0.078, 15, 37, 0.99730, 3.35, 0.86, 12.8]])  # Good wine
-        print(results)
-        # results = simple([input_list])
+        results = simple([input_list])
         # return render_template('test_parameters.html', form=form, result=results)
+        print(results)
     else:
         results = None
 
