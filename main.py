@@ -31,7 +31,6 @@ def test_parameters():
     form = TestParameterForm(request.form)
     if request.method == 'POST' and form.validate():
         print(form.__dict__)
-        # simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
         results = simple([[0.7, 0, 1.9, 0.076, 11, 34, 0.99780, 3.51, 0.56, 9.4]])
         return render_template('test_parameters.html', form=form, result=results[0])
 
@@ -47,7 +46,6 @@ def upload():
         batch_size = int(form.batch_size.data)
         filename = secure_filename(form.training_data.data.filename)
         print(form.__dict__)
-        # Save to Redis here
         form.training_data.data.save('wine_quality/data/' + filename)
         dataframe = pd.read_csv('wine_quality/data/' + filename, sep=',')
         my_model.train(dataframe, learning_rate, batch_size, model_name)
